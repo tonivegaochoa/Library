@@ -1,0 +1,36 @@
+html, body {
+    height: 100%;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    border: 1px solid red;
+}
+
+#booksContainer {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    border: 1px solid blue;
+}
+
+#newBook {
+    margin: 10px;
+    width: 75px;
+}
+
+.book {
+    margin: 10px;
+    width: 200px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid grey;
+    border-radius: 20px;
+}
