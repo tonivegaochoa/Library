@@ -8,14 +8,12 @@ html, body {
     justify-content: flex-start;
     align-items: center;
     height: 100%;
-    border: 1px solid red;
 }
 
 #booksContainer {
     margin: 10px;
     display: flex;
     justify-content: center;
-    border: 1px solid blue;
 }
 
 #newBook {

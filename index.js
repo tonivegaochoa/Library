@@ -1,4 +1,24 @@
-let myLibrary = [];
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+var firebaseConfig = {
+    apiKey: "AIzaSyCtndhViPiHlMdYu3FWI48akBbqrWnTnNE",
+    authDomain: "library-fafa3.firebaseapp.com",
+    databaseURL: "https://library-fafa3-default-rtdb.firebaseio.com/",
+    projectId: "library-fafa3",
+    storageBucket: "library-fafa3.appspot.com",
+    messagingSenderId: "465830388568",
+    appId: "1:465830388568:web:c33c7128b52d4303fffb2d",
+    measurementId: "G-GDKJTNNL45"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+const library = firebase.database().ref().child('books');
+
+library.on('value', snap => {
+    displayBooks(snap);
+});
+
 const newBookBtn = document.querySelector('#newBook');
 newBookBtn.addEventListener('click', addBookToLibrary);
 
@@ -9,15 +29,7 @@ function Book(title, author, pages, read) {
   this.author = author;
   this.pages = pages;
   this.read = read;
-  this.info = function() {
-    return `${title} by ${author}, ${pages} pages, ${read ? "read" : "not read yet"}`;
-  };
 }
-
-Book.prototype.toggleReadStatus = function() {
-  this.read = !(this.read);
-  displayBooks();
-};
 
 function addBookToLibrary() {
   const title = prompt("Enter title");
@@ -25,43 +37,50 @@ function addBookToLibrary() {
   const pages = prompt("Enter the amount of pages");
   const read = prompt("Have you read this book?").toLowerCase() === "yes" ? true : false;
   const newBook = new Book(title, author, pages, read);
-  myLibrary.push(newBook);
-  displayBooks();
+  firebase.database().ref('books/' + title).set(newBook);
 }
 
-function displayBooks() {
+function displayBooks(snap) {
   while(booksContainer.firstChild) {
     booksContainer.removeChild(booksContainer.firstChild);
   }
   
-  myLibrary.forEach((elem, index) => {
+  snap.forEach(child => {
     const book = document.createElement('div');
     book.classList.add('book');
-    book.setAttribute('index', index);
     
     const title = document.createElement('p');
-    title.textContent = elem.title;
+    title.textContent = child.val().title;
     book.appendChild(title);
     
     const author = document.createElement('p');
-    author.textContent = elem.author;
+    author.textContent = child.val().author;
     book.appendChild(author);
 
     const removeBtn = document.createElement('button');
-    removeBtn.addEventListener('click', removeFromLibrary);
+    removeBtn.setAttribute('title', child.val().title);
+    removeBtn.addEventListener('click', removeBookFromLibrary);
     removeBtn.textContent = 'Remove';
     book.appendChild(removeBtn);
     
     const readBtn = document.createElement('button');
-    readBtn.addEventListener('click', function() { elem.toggleReadStatus() });
-    readBtn.textContent = elem.read ? "Read" : "Not Read";
+    readBtn.setAttribute('title', child.val().title);
+    readBtn.addEventListener('click', toggleReadStatus);
+    readBtn.textContent = child.val().read ? "Read" : "Not Read";
     book.appendChild(readBtn);
 
     booksContainer.appendChild(book);
   });
 }
 
-function removeFromLibrary() {
-  myLibrary.splice(this.getAttribute('index'), 1);
-  displayBooks();
+function removeBookFromLibrary() {
+  firebase.database().ref('books/' + this.getAttribute('title')).remove();
+}
+
+function toggleReadStatus() {
+  let read = this.textContent === "Read" ? true : false;
+  read = !read;
+  let updates = {};
+  updates['books/' + this.getAttribute('title') + '/read'] = read;
+  firebase.database().ref().update(updates);
 }
