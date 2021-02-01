@@ -41,8 +41,8 @@ function addBookToLibrary() {
 }
 
 function displayBooks(snap) {
-  while(booksContainer.firstChild) {
-    booksContainer.removeChild(booksContainer.firstChild);
+  while(booksContainer.lastChild && booksContainer.lastChild !== newBookBtn) {
+    booksContainer.removeChild(booksContainer.lastChild);
   }
   
   snap.forEach(child => {
@@ -56,6 +56,10 @@ function displayBooks(snap) {
     const author = document.createElement('p');
     author.textContent = child.val().author;
     book.appendChild(author);
+
+    const pages = document.createElement('p');
+    pages.textContent = child.val().pages + ' pages';
+    book.appendChild(pages);
 
     const removeBtn = document.createElement('button');
     removeBtn.setAttribute('title', child.val().title);

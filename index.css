@@ -1,5 +1,19 @@
 html, body {
     height: 100%;
+    font-family: 'Lato', sans-serif;
+    background-color: lemonchiffon;
+}
+
+button {
+    padding: 8px;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+button:hover {
+    background-color: rgb(161, 161, 161);
 }
 
 #container {
@@ -10,25 +24,50 @@ html, body {
     height: 100%;
 }
 
+#header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: rgb(95, 129, 160);
+}
+
+#title {
+    margin: 10px;
+}
+
 #booksContainer {
+    width: 50%;
     margin: 10px;
     display: flex;
-    justify-content: center;
+    flex-flow: row wrap;
 }
 
 #newBook {
-    margin: 10px;
-    width: 75px;
+    margin: 5px;
+    width: 204px;
+    height: 304px;
+    background-color: inherit;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 20px;
+}
+
+#newBook:hover {
+    background-color: rgb(255, 247, 176);
+}
+
+svg {
+    width: 50%;
 }
 
 .book {
-    margin: 10px;
+    margin: 5px;
     width: 200px;
     height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    border: 1px solid grey;
+    border: 2px solid rgb(0, 0, 0);
     border-radius: 20px;
 }
