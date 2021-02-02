@@ -14,13 +14,26 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const library = firebase.database().ref().child('books');
+const form = document.querySelector('form');
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  document.querySelector('#header').style.cssText = '';
+  document.querySelector('#booksContainer').style.cssText = '';
+  document.querySelector('#formContainer').classList.add('hidden');
+  addBookToLibrary();
+});
 
 library.on('value', snap => {
-    displayBooks(snap);
+  displayBooks(snap);
 });
 
 const newBookBtn = document.querySelector('#newBook');
-newBookBtn.addEventListener('click', addBookToLibrary);
+newBookBtn.addEventListener('click', function() {
+  const form = document.querySelector('#formContainer');
+  document.querySelector('#header').style.cssText = 'filter: blur(6px)';
+  document.querySelector('#booksContainer').style.cssText = 'filter: blur(6px)';
+  form.classList.remove('hidden');
+});
 
 const booksContainer = document.querySelector('#booksContainer');
 
@@ -32,10 +45,10 @@ function Book(title, author, pages, read) {
 }
 
 function addBookToLibrary() {
-  const title = prompt("Enter title");
-  const author = prompt("Enter author");
-  const pages = prompt("Enter the amount of pages");
-  const read = prompt("Have you read this book?").toLowerCase() === "yes" ? true : false;
+  const title = form.querySelector('#title').value;
+  const author = form.querySelector('#author').value;
+  const pages = form.querySelector('#pages').value;
+  const read = form.querySelector('#yes').checked;
   const newBook = new Book(title, author, pages, read);
   firebase.database().ref('books/' + title).set(newBook);
 }
