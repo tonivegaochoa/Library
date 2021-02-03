@@ -15,6 +15,13 @@ firebase.initializeApp(firebaseConfig);
 
 const library = firebase.database().ref().child('books');
 const form = document.querySelector('form');
+const newBookBtn = document.querySelector('#newBook');
+const booksContainer = document.querySelector('#booksContainer');
+
+library.on('value', snap => {
+  displayBooks(snap);
+});
+
 form.addEventListener('submit', function(e) {
   e.preventDefault();
   document.querySelector('#header').style.cssText = '';
@@ -23,19 +30,12 @@ form.addEventListener('submit', function(e) {
   addBookToLibrary();
 });
 
-library.on('value', snap => {
-  displayBooks(snap);
-});
-
-const newBookBtn = document.querySelector('#newBook');
 newBookBtn.addEventListener('click', function() {
   const form = document.querySelector('#formContainer');
   document.querySelector('#header').style.cssText = 'filter: blur(6px)';
   document.querySelector('#booksContainer').style.cssText = 'filter: blur(6px)';
   form.classList.remove('hidden');
 });
-
-const booksContainer = document.querySelector('#booksContainer');
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -95,7 +95,7 @@ function removeBookFromLibrary() {
 }
 
 function toggleReadStatus() {
-  let read = this.textContent === "Read" ? true : false;
+  let read = this.textContent === "Read";
   read = !read;
   let updates = {};
   updates['books/' + this.getAttribute('title') + '/read'] = read;

@@ -20,15 +20,15 @@
             <div id="formContainer" class="hidden">
               <form>
                 <label for="title">Title</label><br>
-                <input type="text" id="title" name="title"><br>
+                <input type="text" id="title" name="title" required><br>
                 <label for="author">Author</label><br>
-                <input type="text" id="author" name="author"><br>
+                <input type="text" id="author" name="author" required><br>
                 <label for="pages">Number of pages</label><br>
-                <input type="number" name="pages" id="pages" min="1"><br>
+                <input type="number" name="pages" id="pages" min="1" required><br>
                 <p>Have you read this book?</p>
-                <input type="radio" name="read" id="yes">
+                <input type="radio" name="read" id="yes" required>
                 <label for="read">yes</label><br>
-                <input type="radio" name="read" id="no">
+                <input type="radio" name="read" id="no" required>
                 <label for="read">no</label><br><br>
                 <input type="submit" value="Add Book" id="submit">
               </form>
